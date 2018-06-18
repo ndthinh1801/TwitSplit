@@ -34,7 +34,7 @@ The following bonus features are implemented:
 # Video Walkthrough
 Here's a walkthrough of implemented user stories:
 
-![2018-06-18 16_06_00](https://thumbs.gfycat.com/EcstaticIdealAnteater-size_restricted.gif)
+![2018-06-18 16_06_00](https://thumbs.gfycat.com/IdealEssentialIndri-size_restricted.gif)
 
 GIF created with [LiceCap](https://www.cockos.com/licecap/).
 # Open-source libraries used
