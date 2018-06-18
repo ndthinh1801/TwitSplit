@@ -21,6 +21,8 @@ public interface IMessageContract {
         void loadMessage(List<Message> messageList);
 
         void showAddMessage();
+
+        void setLoading(boolean isShowing);
     }
 
     interface IMessagePresenter {

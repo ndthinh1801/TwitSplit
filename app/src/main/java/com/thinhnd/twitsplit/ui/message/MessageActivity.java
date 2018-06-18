@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -25,7 +26,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MessageActivity extends AppCompatActivity implements IMessageContract.IMessageView {
+public class MessageActivity extends AppCompatActivity implements IMessageContract.IMessageView, SwipeRefreshLayout.OnRefreshListener {
 
     @BindView(R.id.rv_message)
     RecyclerView mRvListMessage;
@@ -33,6 +34,8 @@ public class MessageActivity extends AppCompatActivity implements IMessageContra
     Toolbar mToolbar;
     @BindView(R.id.fab)
     FloatingActionButton mFab;
+    @BindView(R.id.refresh_layout)
+    SwipeRefreshLayout mSrl;
 
     private MessageListAdapter mMessageAdapter;
     private MessagePresenter mMessagePresenter;
@@ -49,7 +52,9 @@ public class MessageActivity extends AppCompatActivity implements IMessageContra
         mMessageAdapter = new MessageListAdapter(this, new ArrayList<Message>());
         mRvListMessage.setAdapter(mMessageAdapter);
         mRvListMessage.setLayoutManager(new LinearLayoutManager(this));
-
+        mSrl.setColorSchemeResources(R.color.colorPrimary, R.color.holo_green_dark,
+                R.color.holo_orange_dark, R.color.holo_blue_dark);
+        mSrl.setOnRefreshListener(this);
 
         mFab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -126,8 +131,20 @@ public class MessageActivity extends AppCompatActivity implements IMessageContra
     }
 
     @Override
+    public void setLoading(final boolean isShowing) {
+        if (mSrl.isRefreshing() != isShowing) {
+            mSrl.setRefreshing(isShowing);
+        }
+    }
+
+    @Override
     public void setPresenter(IMessageContract.IMessagePresenter presenter) {
         mMessagePresenter = (MessagePresenter) presenter;
 
+    }
+
+    @Override
+    public void onRefresh() {
+        mMessagePresenter.start();
     }
 }

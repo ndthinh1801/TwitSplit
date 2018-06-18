@@ -46,11 +46,15 @@ public class MessagePresenter implements IMessageContract.IMessagePresenter {
      */
     @Override
     public void start() {
+        if (mMessageView.get() != null){
+            mMessageView.get().setLoading(true);
+        }
         mMessageRepository.getAllMessages(new LoadMessageCallBack() {
             @Override
             public void onMessagesLoaded(List<Message> messages) {
                 if (mMessageView.get() != null) {
                     mMessageView.get().loadMessage(messages);
+                    mMessageView.get().setLoading(false);
                 }
             }
 
@@ -58,6 +62,7 @@ public class MessagePresenter implements IMessageContract.IMessagePresenter {
             public void onDataNotAvailable() {
                 if (mMessageView.get() != null) {
                     mMessageView.get().showNoMessage();
+                    mMessageView.get().setLoading(false);
                 }
             }
         });
