@@ -66,6 +66,9 @@ public class AddMessageActivity extends AppCompatActivity implements IAddMessage
         showMessage(getString(R.string.message_not_valid_error));
     }
 
+    /**
+     * return to message list screen
+     */
     @Override
     public void showMessageList() {
         setResult(RESULT_OK);

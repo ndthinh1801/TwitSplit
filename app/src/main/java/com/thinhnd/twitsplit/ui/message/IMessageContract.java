@@ -7,6 +7,9 @@ import java.util.List;
 
 /**
  * Created by ThinhND on 6/18/2018.
+ *
+ * This specifies the contract between the view and the presenter.
+ *
  */
 public interface IMessageContract {
     interface IMessageView extends BaseView<IMessagePresenter> {

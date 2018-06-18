@@ -24,17 +24,26 @@ public class MessagePresenter implements IMessageContract.IMessagePresenter {
         mMessageView.get().setPresenter(this);
     }
 
+    /**
+     * Navigate to Adding Message screen
+     */
     @Override
     public void showAddMessage() {
         mMessageView.get().showAddMessage();
     }
 
 
+    /**
+     * Show notification when messages are successfully saved
+     */
     @Override
     public void showSuccessfullySavedMessage() {
         mMessageView.get().showSuccessfullySavedMessage();
     }
 
+    /**
+     * Start get all message from database when open activity
+     */
     @Override
     public void start() {
         mMessageRepository.getAllMessages(new LoadMessageCallBack() {

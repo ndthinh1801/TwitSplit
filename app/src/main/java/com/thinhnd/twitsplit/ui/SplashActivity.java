@@ -10,8 +10,8 @@ import com.thinhnd.twitsplit.ui.message.MessageActivity;
 
 public class SplashActivity extends AppCompatActivity {
 
-    // Splash screen timer
-    private static final int SPLASH_TIME_OUT = 3000;
+    // Splash screen time out
+    private static final int SPLASH_TIME_OUT = 1500;
 
     private final Runnable mStartActivityRunnable = new Runnable() {
         @Override

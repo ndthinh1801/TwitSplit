@@ -24,6 +24,12 @@ public class AddMessagePresenter implements IAddMessageContract.IAddMessagePrese
         mAddMessageView.get().setPresenter(this);
     }
 
+    /***
+     * Save message to database
+     * @param userName user name
+     * @param screenName screen name
+     * @param content message content
+     */
     @Override
     public void saveMessage(String userName, String screenName, String content) {
         if (TextUtils.isEmpty(userName) || userName.trim().length() == 0) {

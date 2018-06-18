@@ -95,11 +95,18 @@ public class MessageActivity extends AppCompatActivity implements IMessageContra
         showMessage(getString(R.string.saved_message_text));
     }
 
+    /**
+     * Notify when application has no message
+     */
     @Override
     public void showNoMessage() {
         showMessage(getString(R.string.no_message_error));
     }
 
+    /***
+     * Update message to List
+     * @param messageList
+     */
     @Override
     public void loadMessage(List<Message> messageList) {
         mMessageAdapter.replaceData(messageList);
@@ -109,6 +116,9 @@ public class MessageActivity extends AppCompatActivity implements IMessageContra
         Snackbar.make(mRvListMessage, message, Snackbar.LENGTH_LONG).show();
     }
 
+    /**
+     * Navigate to Adding message screen
+     */
     @Override
     public void showAddMessage() {
         Intent intent = new Intent(MessageActivity.this, AddMessageActivity.class);
