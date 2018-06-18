@@ -1,8 +1,7 @@
-package com.thinhnd.twitsplit.message;
+package com.thinhnd.twitsplit.ui.message;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -12,13 +11,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
-import android.widget.Toast;
 
 import com.thinhnd.twitsplit.MessageListAdapter;
 import com.thinhnd.twitsplit.R;
 import com.thinhnd.twitsplit.data.Message;
 import com.thinhnd.twitsplit.data.MessageRepository;
+import com.thinhnd.twitsplit.ui.addmessage.AddMessageActivity;
+import com.thinhnd.twitsplit.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,10 +25,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MessageActivity extends AppCompatActivity implements IMessageView {
+public class MessageActivity extends AppCompatActivity implements IMessageContract.IMessageView {
 
-    @BindView(R.id.coordinatorLayout)
-    CoordinatorLayout mCoordinatorLayout;
     @BindView(R.id.rv_message)
     RecyclerView mRvListMessage;
     @BindView(R.id.toolbar)
@@ -45,25 +42,35 @@ public class MessageActivity extends AppCompatActivity implements IMessageView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        setTitle("Tweeter");
+        setTitle(getString(R.string.message_screen_title));
         setSupportActionBar(mToolbar);
-        mFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
         mMessagePresenter = new MessagePresenter(this, MessageRepository.getInstance(getApplicationContext()));
         mMessageAdapter = new MessageListAdapter(this, new ArrayList<Message>());
         mRvListMessage.setAdapter(mMessageAdapter);
         mRvListMessage.setLayoutManager(new LinearLayoutManager(this));
+
+
+        mFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mMessagePresenter.showAddMessage();
+            }
+        });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mMessagePresenter.start();
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == Constants.NEW_ADD_MESSAGE_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
+            mMessagePresenter.showSuccessfullySavedMessage();
+        }
     }
 
     @Override
@@ -84,30 +91,33 @@ public class MessageActivity extends AppCompatActivity implements IMessageView {
     }
 
     @Override
-    public void setPresenter(MessagePresenter presenter) {
-        mMessagePresenter = presenter;
-    }
-
-    @Override
     public void showSuccessfullySavedMessage() {
+        showMessage(getString(R.string.saved_message_text));
     }
 
     @Override
     public void showNoMessage() {
-
+        showMessage(getString(R.string.no_message_error));
     }
 
     @Override
-    public void loadMessage() {
-
+    public void loadMessage(List<Message> messageList) {
+        mMessageAdapter.replaceData(messageList);
     }
 
     private void showMessage(String message) {
-        Snackbar.make(mCoordinatorLayout, message, Snackbar.LENGTH_LONG).show();
+        Snackbar.make(mRvListMessage, message, Snackbar.LENGTH_LONG).show();
     }
 
     @Override
     public void showAddMessage() {
+        Intent intent = new Intent(MessageActivity.this, AddMessageActivity.class);
+        startActivityForResult(intent, Constants.NEW_ADD_MESSAGE_ACTIVITY_REQUEST_CODE);
+    }
+
+    @Override
+    public void setPresenter(IMessageContract.IMessagePresenter presenter) {
+        mMessagePresenter = (MessagePresenter) presenter;
 
     }
 }

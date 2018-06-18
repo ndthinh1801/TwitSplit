@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.thinhnd.twitsplit.data.Message;
+import com.thinhnd.twitsplit.utils.DateUtils;
 
 import java.util.List;
 
@@ -64,8 +65,8 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
     public void onBindViewHolder(MessageViewHolder holder, int position) {
         Message message = mMessageList.get(position);
         holder.mTvName.setText(message.getUserName());
-        holder.mTvScreenName.setText(message.getUserScreenName());
-        holder.mTvDuration.setText(message.getTimestamp().toString());
+        holder.mTvScreenName.setText(new StringBuilder().append("@").append(message.getUserScreenName()).toString());
+        holder.mTvDuration.setText(DateUtils.getTimeAgo(message.getTimestamp()));
         holder.mTvText.setText(message.getContent());
     }
 
